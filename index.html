@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para a Marina ✨</title>
+    <!-- Fonte bonita estilo Ordem / Indie -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --yellow-main: #ffd700;
+            --yellow-glow: #ffea79;
+            --bg-dark: #121214;
+            --card-bg: #1e1e24;
+            --text-color: #f5f5f7;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Fundo com partículas sutis */
+        #bgCanvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.15);
+            border: 2px solid var(--yellow-main);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            position: relative;
+            z-index: 2;
+            margin: 20px auto;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255, 215, 0, 0.2);
+            color: var(--yellow-main);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            border: 1px solid var(--yellow-main);
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            color: var(--yellow-main);
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+
+        p {
+            font-size: 15px;
+            color: #d1d1d6;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--yellow-main);
+            background-color: #121214;
+            color: white;
+            font-size: 16px;
+            text-align: center;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        button {
+            background-color: var(--yellow-main);
+            color: #000;
+            border: none;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.02);
+            background-color: var(--yellow-glow);
+        }
+
+        .step { display: none; }
+        .active { display: block; }
+
+        .error {
+            color: #ff5555;
+            font-size: 13px;
+            margin-top: -10px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        /* Player Estilo Spotify */
+        .player-card {
+            background: rgba(0,0,0,0.4);
+            border-radius: 12px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        /* Área do Botão Foge */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            position: relative;
+            min-height: 60px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #btnNo {
+            position: absolute;
+            background-color: #3a3a3c;
+            color: #fff;
+            width: 45%;
+            transition: 0.1s ease;
+        }
+
+        #btnYes {
+            width: 45%;
+        }
+
+        .final-card h1 {
+            color: var(--yellow-main);
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        /* Contador no final */
+        #timer {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--yellow-glow);
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border: 1px dashed var(--yellow-main);
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+
+<div class="container">
+
+    <!-- PLAYER DE MÚSICA (Exemplo com Jão) -->
+    <div class="player-card">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/artist/3B3319Lq2o33A0A8Xk7q4A?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+
+    <!-- TELA 0: INTRODUÇÃO -->
+    <div id="step0" class="step active">
+        <span class="badge">Oii amor tava sem fazer nada e fiz um site com algumas perguntas bobas</span>
+        <h2>User: Marina💛</h2>
+        <p>dê play na música acima pfv 😭</p>
+        <button onclick="nextStep(0, 1)">Iniciar🚀</button>
+    </div>
+
+    <!-- TELA 1: PERGUNTA DE DATA -->
+    <div id="step1" class="step">
+        <span class="badge">ENIGMA 01</span>
+        <h2>Data de Nascimento</h2>
+        <p>Qual é a data em que o mundo ficou mais bonito?</p>
+        <input type="date" id="ans1" oninput="hideError('err1')">
+        <p id="err1" class="error">Data incorreta, amor! Tente de novo. 👀</p>
+        <button onclick="checkStep1()">Validar Data 🔍</button>
+    </div>
+
+    <!-- TELA 2: RPG & CELLBIT -->
+    <div id="step2" class="step">
+        <span class="badge">ENIGMA 02</span>
+        <h2>O Elemento Principal</h2>
+        <p>Se a nossa história fosse um RPG do Cellbit, qual seria o Elemento de Paranormal que conecta a gente?</p>
+        <input type="text" id="ans2" placeholder="Energia, Morte, Sangue, Conhecimento..." oninput="hideError('err2')">
+        <p id="err2" class="error">Hummm, não é esse! Dica: Tem a ver com amor/conexão intensa ou luz! 😉</p>
+        <button onclick="checkStep2()">Analisar Resposta ✨</button>
+    </div>
+
+    <!-- TELA 3: JÃO / MÚSICA -->
+    <div id="step3" class="step">
+        <span class="badge">ENIGMA 03</span>
+        <h2>Trilha Sonora</h2>
+        <p>O Jão canta sobre sentimentos intensos, mas qual é o único garoto que é completamente louco por você?</p>
+        <input type="text" id="ans3" placeholder="Nome..." oninput="hideError('err3')">
+        <p id="err3" class="error">Essa tá fácil demais, vai! Kkkk 💛</p>
+        <button onclick="checkStep3()">Avançar 🎧</button>
+    </div>
+
+    <!-- TELA 4: A PERGUNTA INTERATIVA (BOTÃO QUE FOGE) -->
+    <div id="step4" class="step">
+        <span class="badge">DECISÃO FINAL</span>
+        <h2>Pergunta Crucial 🤔</h2>
+        <p>Você aceita continuar sendo a minha pessoa favorita entre todas no mundo pra sempre?</p>
+        <div class="btn-group">
+            <button id="btnYes" onclick="finishQuiz()">SIM! 💛</button>
+            <button id="btnNo" onmouseover="dodgeBtn()" onclick="dodgeBtn()">NÃO</button>
+        </div>
+    </div>
+
+    <!-- TELA FINAL -->
+    <div id="stepFinal" class="step final-card">
+        <span class="badge">CONCLUÍDO ✨</span>
+        <h1>eu te amo muito amor! ❤️</h1>
+        <p>Você é o meu elemento favorito no mundo. Obrigado por deixar minha vida muito mais bonita e feliz!</p>
+
+        <div id="timer">Contando cada segundo ao seu lado...</div>
+    </div>
+
+</div>
+
+<script>
+    function nextStep(current, next) {
+        document.getElementById(`step${current}`).classList.remove('active');
+        document.getElementById(`step${next}`).classList.add('active');
+    }
+
+    function hideError(id) {
+        document.getElementById(id).style.display = 'none';
+    }
+
+    // Aniversário: 11/09/2011 (Formato YYYY-MM-DD)
+    function checkStep1() {
+        const val = document.getElementById('ans1').value;
+        if (val === "2011-09-11") {
+            nextStep(1, 2);
+        } else {
+            document.getElementById('err1').style.display = 'block';
+        }
+    }
+
+    // RPG / Elemento
+    function checkStep2() {
+        const val = document.getElementById('ans2').value.trim().toLowerCase();
+        // Aceita várias respostas possíveis para não travar ela
+        if (val.length > 0) {
+            nextStep(2, 3);
+        } else {
+            document.getElementById('err2').style.display = 'block';
+        }
+    }
+
+    // Pergunta do João
+    function checkStep3() {
+        const val = document.getElementById('ans3').value.trim().toLowerCase();
+        if (val.includes("joao") || val.includes("joão") || val.includes("você") || val.includes("voce")) {
+            nextStep(3, 4);
+        } else {
+            document.getElementById('err3').style.display = 'block';
+        }
+    }
+
+    // Botão "Não" que corre do cursor
+    function dodgeBtn() {
+        const btn = document.getElementById('btnNo');
+        const x = Math.random() * (window.innerWidth - 120) - (window.innerWidth / 2) + 60;
+        const y = Math.random() * (window.innerHeight - 60) - (window.innerHeight / 2) + 30;
+        btn.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    // Finalização com Confetes Coloridos (Amarelo e Dourado)
+    function finishQuiz() {
+        nextStep(4, 'Final');
+        
+        // Efeito de Confetes estilo Jão / Show
+        confetti({
+            particleCount: 120,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#ffd700', '#ffea79', '#ffffff', '#ff9a9e']
+        });
+
+        startTimer();
+    }
+
+    // Relógio Simples
+    function startTimer() {
+        const timerElem = document.getElementById('timer');
+        // Você pode ajustar a data em que se conheceram ou começaram a namorar aqui!
+        const startDate = new Date(); 
+
+        setInterval(() => {
+            const now = new Date();
+            const diff = now - startDate;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            timerElem.innerHTML = `Especialmente para você ✨💛`;
+        }, 1000);
+    }
+
+    // Animação de fundo com Partículas Amarelas (Estilo Néon / Ordem)
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particles = [];
+    for(let i = 0; i < 40; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 3 + 1,
+            speedY: Math.random() * 1 + 0.5,
+            opacity: Math.random()
+        });
+    }
+
+    function animateBG() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            ctx.fillStyle = `rgba(255, 215, 0, ${p.opacity})`;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+
+            p.y -= p.speedY;
+            if(p.y < 0) p.y = canvas.height;
+        });
+        requestAnimationFrame(animateBG);
+    }
+    animateBG();
+</script>
+
+</body>
+</html>
