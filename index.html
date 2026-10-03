@@ -182,9 +182,9 @@
 
 <div class="container">
 
-    <!-- PLAYER DE MÚSICA (Exemplo com Jão) -->
+    <!-- PLAYER DE MÚSICA COM A PLAYLIST ATUALIZADA -->
     <div class="player-card">
-        <iframe style="border-radius:12px" src="https://open.spotify.com/playlist/3XFqZmxJvnpBWMheAYmWZ3?si=315N3nDfR3qIjUiFmoA5tw&utm_source=copy-link&pi=LDWRDqg_Tkepl" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/3XFqZmxJvnpBWMheAYmWZ3?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
 
     <!-- TELA 0: INTRODUÇÃO -->
@@ -313,7 +313,6 @@
     // Relógio Simples
     function startTimer() {
         const timerElem = document.getElementById('timer');
-        // Você pode ajustar a data em que se conheceram ou começaram a namorar aqui!
         const startDate = new Date(); 
 
         setInterval(() => {
